@@ -1,0 +1,48 @@
+#Posible solucion al problema 16 de https://retosdeprogramacion.com/ejercicios/
+#Solcuion utilizando metodos de la librerila datetime
+#Crea una función que calcule y retorne cuántos días hay entre dos cadenas
+# de texto que representen fechas.
+# - Una cadena de texto que representa una fecha tiene el formato "dd/MM/yyyy".
+# - La función recibirá dos String y retornará un Int.
+# - La diferencia en días será absoluta (no importa el orden de las fechas).
+# - Si una de las dos cadenas de texto no representa una fecha correcta se
+#   lanzará una excepción.
+
+from datetime import datetime
+
+def cuantos_dias(fecha1, fecha2):
+
+  #Funcion para evitar mensajes de error al introducir fechas enformato no váilo
+  def validar_fecha(fecha):
+    try:
+      if not isinstance(fecha, int):
+        raise ValueError(f"La fehca '{fehca}' debe ser del formato dd/mm/aaaa")
+      dia, mes, año = map(int, fecha.split("/"))
+      dias_meses = {1:31, 2:29 if es_bisiesto(año) else 28, 
+                      3:31, 4:30, 5:31, 
+                      6:30, 7:31, 8:31,
+                      9:30, 10:31, 11:30, 12:31}
+
+      if dia < 1 or dia > 31:
+        raise ValurError(f"Valor fuera de rango, el dia de la fecha '{fecha}' ha de estarcomprendido entre 1 y 31")
+      elif mes < 1 or mes > 12:
+        raise ValueError(f"Valor fuera de rango, el mes de la fecha '{fecha}' ha de estar comprendido entre 1 y 12
+      elif dia > dias_meses[mes]:
+        raise ValueError(f"El dia {dia} excede del máximo de {dias_meses[mes]} dias para el mes {mes})
+      return dia, mes, año
+    except ValueError as e:
+      print(f"La fecha '{fecha}' introducida no es válida: {e}")
+      return None
+
+  def es_bisiesto(año):
+      return año % 4 == 0 and (año % 100 != 0 or año % 400 == 0)
+
+  #Validamos las fehcas introducidas
+  fecha1_valida = validar_fecha(fecha1)
+  fecha2_valida = validar_fecha(fecha2)
+
+  dia1, mes1, año1 = fecha1_valida
+  dia2, mes2, año2 = fecha2_valida
+
+  diferencia = abs(datetime(año2, mes2, dia2) - datetime(año1, mes1, dia1))
+  return (f"La cantidad de dias entre las fechas {fecha1} y {fecha2} es de {diferencia.days}")
